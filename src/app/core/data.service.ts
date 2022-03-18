@@ -40,11 +40,10 @@ export class DataService {
   }
 
   private handleHttpError(err: HttpErrorResponse): Observable<BookTrackerError> {
-    const bookTrackerError = {
-      errorNumber: 100,
-      message: err.statusText,
-      friendlyMessage: 'An error occurred retrieving data!'
-    }
+    const bookTrackerError: BookTrackerError = new BookTrackerError();
+    bookTrackerError.errorNumber = 100;
+    bookTrackerError.message = err.statusText;
+    bookTrackerError.friendlyMessage = 'An error occurred retrieving data!';
     return throwError(bookTrackerError);
   }
 

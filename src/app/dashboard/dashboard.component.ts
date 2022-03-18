@@ -6,6 +6,7 @@ import { Book } from "app/models/book";
 import { Reader } from "app/models/reader";
 import { DataService } from 'app/core/data.service';
 import { BookTrackerError } from 'app/models/bookTrackerError';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,15 +20,25 @@ export class DashboardComponent implements OnInit {
   mostPopularBook: Book;
 
   constructor(private dataService: DataService,
-    private title: Title) { }
+    private title: Title,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.dataService.getAllBooks()
+    let resolveData: Book[] | BookTrackerError = this.route.snapshot.data['resolvedBooks']
+    console.log(resolveData instanceof BookTrackerError);
+
+    if (resolveData instanceof BookTrackerError) {
+      console.error(resolveData.friendlyMessage);
+    }
+    else {
+      this.allBooks = <Book[]>resolveData;
+    }
+    /* this.dataService.getAllBooks()
       .subscribe(
         (data: Book[] | BookTrackerError) => this.allBooks = <Book[]>data,
         (err: BookTrackerError) => console.error(err.friendlyMessage),
         () => console.log('All done getting books')
-      );
+      ); */
     this.allReaders = this.dataService.getAllReaders();
     this.mostPopularBook = this.dataService.mostPopularBook;
 
