@@ -4,10 +4,11 @@ import { allBooks, allReaders } from 'app/data';
 import { Reader } from "app/models/reader";
 import { Book } from "app/models/book";
 import { BookTrackerError } from 'app/models/bookTrackerError';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators'
 import { OldBook } from 'app/models/oldBook';
+import { CONTENT_TYPE } from './add-header.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,9 @@ export class DataService {
   // get 成功返回 200 OK 或者 命中缓存 304 OK
   // body 是 JSON 对象，可以被序列化为 <> 泛型里指定的对象
   getAllBooks(): Observable<Book[] | BookTrackerError> {
-    return this.http.get<Book[]>('/api/books')
+    return this.http.get<Book[]>('/api/books', {
+      context: new HttpContext().set(CONTENT_TYPE, 'application/xml')
+    })
       .pipe(
         catchError(err => this.handleHttpError(err))
       )
