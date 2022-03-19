@@ -33,7 +33,7 @@ export class DataService {
   // get 成功返回 200 OK 或者 命中缓存 304 OK
   // body 是 JSON 对象，可以被序列化为 <> 泛型里指定的对象
   getAllBooks(): Observable<Book[] | BookTrackerError> {
-    return this.http.get<Book[]>('/api/error/500')
+    return this.http.get<Book[]>('/api/books')
       .pipe(
         catchError(err => this.handleHttpError(err))
       )

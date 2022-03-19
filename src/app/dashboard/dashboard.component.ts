@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     let resolveData: Book[] | BookTrackerError = this.route.snapshot.data['resolvedBooks']
-    console.log(resolveData instanceof BookTrackerError);
+    // console.log(resolveData instanceof BookTrackerError);
 
     if (resolveData instanceof BookTrackerError) {
       console.error(resolveData.friendlyMessage);
